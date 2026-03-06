@@ -9,44 +9,60 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet">
 </head>
 
-<body class="bg-gray-100">
+<body class="">
 
     <!-- Navbar -->
-    <nav class="flex justify-between items-center p-4 bg-white shadow-md">
+    <nav class="flex justify-between items-center p-4 shadow-md">
         <div class="flex items-center gap-2 font-bold text-xl">
             <img src="assets/github-logo.png" alt="Logo" class="w-10 h-10">
             GitHub Issues Tracker
         </div>
         <div class="flex gap-2">
-            <input type="text" placeholder="Search..." id="searchInput" class="input input-bordered">
-            <button class="btn btn-primary" id="searchBtn">Search</button>
+            <input type="text" placeholder="Search..." id="searchInput"
+                class="input input-bordered border border-black">
+            <button class="btn px-4 text-white font-bold bg-[#4a00FF]" id="searchBtn">+New Issue</button>
         </div>
     </nav>
 
+
     <!-- Tabs -->
-    <!-- Tabs -->
-    <section class="w-full flex justify-center gap-2 sm:gap-4 mt-4">
+
+    <section
+        class=" mx-auto w-11/12 px-4 py-6 md:w-4/5 h-16 flex justify-start items-center border rounded-lg shadow-md mx-auto gap-2 sm:gap-4 mt-4">
         <button id="allBtn" data-tab="all" onclick="loadTab('allBtn')"
-            class="btn allBtn bg-[#4A00FF] text-white hover:opacity-90 transition">
+            class="btn allBtn px-12 bg-[#4A00FF] text-white rounded hover:opacity-90 transition">
             All
         </button>
         <button id="openBtn" data-tab="open" onclick="loadTab('openBtn')"
-            class="btn allBtn bg-white text-black border hover:opacity-90 transition">
+            class="btn allBtn px-12  bg-white text-black border rounded hover:opacity-90 transition">
             Open
         </button>
         <button id="closeBtn" data-tab="closed" onclick="loadTab('closeBtn')"
-            class="btn allBtn bg-white text-black border hover:opacity-90 transition">
+            class="btn allBtn px-12  bg-white text-black border rounded hover:opacity-90 transition">
             Closed
         </button>
     </section>
 
     <!-- Issue Tracker -->
     <section class="mx-auto w-11/12 md:w-4/5 mt-4 p-4 border rounded-lg shadow-md bg-white">
-        <div class="flex items-center gap-3">
-            <img src="assets/Aperture.png" class="h-10 rounded-full bg-gray-300" alt="">
-            <div>
-                <h2 id="issueCount" class="text-2xl font-semibold">0 Issues</h2>
-                <p class="text-gray-500 text-sm">Track and manage your project issues</p>
+
+        <div class="flex justify-between">
+            <div class="flex gap-3">
+                <img src="assets/Aperture.png" class="h-10 rounded-full bg-gray-300" alt="">
+                <div>
+                    <h2 id="issueCount" class="text-2xl font-semibold">0 Issues</h2>
+                    <p class="text-gray-500 text-l">Track and manage your project issues</p>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-4 h-4 bg-pink-500 rounded-full"></div>
+                    <span>Open</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-4 h-4 bg-purple-500 rounded-full"></div>
+                    <span>Closed</span>
+                </div>
             </div>
         </div>
 
@@ -61,7 +77,10 @@
         <div id="allContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4"></div>
         <div id="openContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4"></div>
         <div id="closedContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4"></div>
-        <!-- Modal / Cart -->
+        <!-- Popover -->
+        <p id="popoverLabel" class="text-sm mt-2"></p>
+
+        <!-- Cart -->
         <div id="issueCart" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center">
             <div class="bg-white rounded-lg w-11/12 md:w-96 p-6 relative">
                 <button onclick="closeCart()" class="absolute top-2 right-2 text-xl font-bold">✖</button>
@@ -71,7 +90,7 @@
                 <p id="cartCategory"></p>
                 <p id="cartAuthor"></p>
                 <p id="cartPriority"></p>
-                <p id="cartLabel"></p>
+                <p id="cartLabel" class="mt-2 text-sm"></p> <!-- Only inside modal -->
                 <p id="cartCreated"></p>
             </div>
         </div>
