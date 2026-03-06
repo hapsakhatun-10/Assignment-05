@@ -4,22 +4,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- daisy ui -->
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- tailwind css -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Dashboard - GitHub Issues Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet">
 </head>
 
-<body>
+<body class="bg-gray-100">
 
-    <!-- navber -->
+    <!-- Navbar -->
+    <nav class="flex justify-between items-center p-4 bg-white shadow-md">
+        <div class="flex items-center gap-2 font-bold text-xl">
+            <img src="assets/github-logo.png" alt="Logo" class="w-10 h-10">
+            GitHub Issues Tracker
+        </div>
+        <div class="flex gap-2">
+            <input type="text" placeholder="Search..." id="searchInput" class="input input-bordered">
+            <button class="btn btn-primary" id="searchBtn">Search</button>
+        </div>
+    </nav>
+
+    <!-- Tabs -->
+    <!-- Tabs -->
+    <section class="w-full flex justify-center gap-2 sm:gap-4 mt-4">
+        <button id="allBtn" data-tab="all" onclick="loadTab('allBtn')"
+            class="btn allBtn bg-[#4A00FF] text-white hover:opacity-90 transition">
+            All
+        </button>
+        <button id="openBtn" data-tab="open" onclick="loadTab('openBtn')"
+            class="btn allBtn bg-white text-black border hover:opacity-90 transition">
+            Open
+        </button>
+        <button id="closeBtn" data-tab="closed" onclick="loadTab('closeBtn')"
+            class="btn allBtn bg-white text-black border hover:opacity-90 transition">
+            Closed
+        </button>
+    </section>
+
+    <!-- Issue Tracker -->
+    <section class="mx-auto w-11/12 md:w-4/5 mt-4 p-4 border rounded-lg shadow-md bg-white">
+        <div class="flex items-center gap-3">
+            <img src="assets/Aperture.png" class="h-10 rounded-full bg-gray-300" alt="">
+            <div>
+                <h2 id="issueCount" class="text-2xl font-semibold">0 Issues</h2>
+                <p class="text-gray-500 text-sm">Track and manage your project issues</p>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loadingSpinner" class="hidden text-center my-4">
+            <span class="loading loading-spinner loading-lg"></span>
+        </div>
 
 
 
+        <!-- Issue Cards Container -->
+        <div id="allContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4"></div>
+        <div id="openContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4"></div>
+        <div id="closedContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4"></div>
+        <!-- Modal / Cart -->
+        <div id="issueCart" class="fixed inset-0 bg-black/50 hidden justify-center items-center">
+            <div class="bg-white rounded-lg w-11/12 md:w-96 p-6 relative">
+                <button onclick="closeCart()" class="absolute top-2 right-2 text-xl font-bold">✖</button>
+                <h2 id="cartTitle" class="text-xl font-bold mb-2"></h2>
+                <p id="cartDescription"></p>
+                <p id="cartStatus"></p>
+                <p id="cartCategory"></p>
+                <p id="cartAuthor"></p>
+                <p id="cartPriority"></p>
+                <p id="cartLabel"></p>
+                <p id="cartCreated"></p>
+            </div>
+        </div>
 
-
+        <!-- Link External JS -->
+        <script src="script.js"></script>
 
 </body>
 

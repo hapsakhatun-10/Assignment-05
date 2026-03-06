@@ -4,57 +4,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- daisy ui -->
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- tailwind css -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Login - GitHub Issues Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet">
 </head>
 
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
 
     <div class="bg-white w-[420px] rounded-xl shadow-lg p-8">
-
-        <!-- Logo -->
         <div class="flex justify-center mb-4">
-            <img src="assets/github-logo.png" alt="">
+            <img src="assets/github-logo.png" alt="Logo" class="h-16">
+        </div>
+        <h2 class="text-center text-2xl font-semibold text-gray-800">GitHub Issues Tracker</h2>
+        <p class="text-center text-gray-500 text-sm mb-6">Sign in to manage your issues</p>
+
+        <!-- Login Form -->
+        <div class="flex flex-col gap-2">
+            <label class="text-sm text-gray-600">Username</label>
+            <input type="text" id="username" placeholder="Enter Username"
+                class="w-full border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <p class="text-xs text-teal-600">Default: admin</p>
+
+            <label class="text-sm text-gray-600">Password</label>
+            <input type="password" id="password" placeholder="Enter Password"
+                class="w-full border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <p class="text-xs text-teal-600 mb-4">Default: admin123</p>
+
+            <button onclick="login()"
+                class="w-full bg-[#4A00FF] text-white py-2 rounded-md font-medium hover:opacity-90">
+                Sign In
+            </button>
         </div>
 
-        <h2 class="text-center text-2xl font-semibold text-gray-800">
-            GitHub Issues Tracker
-        </h2>
-        <p class="text-center text-gray-500 text-sm mb-6">
-            Sign in to manage your issues
-        </p>
-        <label class="text-sm text-gray-600">Username</label>
-        <input type="text" id="userId" placeholder="Enter Username"
-            class="w-full border mt-1 mb-1 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
-
-        <p class="text-xs text-teal-600 mb-4">
-            Default: admin
-        </p>
-        <!-- Password -->
-        <label class="text-sm text-gray-600">Password</label>
-        <input type="password" id="userPass" placeholder="Enter Password"
-            class="w-full border mt-1 mb-1 p-2 rounded-md ">
-
-        <p class="text-xs text-teal-600 mb-4">
-            Default: admin123
-        </p>
-
-        <!-- Button -->
-        <button class="w-full bg-[#4A00FF] text-white py-2 rounded-md font-medium hover:opacity-90" onclick="login()">
-            Sign In
-        </button>
-        <!-- Divider -->
         <div class="flex items-center my-6">
             <div class="flex-1 border-t"></div>
             <span class="px-3 text-gray-400 text-sm">OR</span>
             <div class="flex-1 border-t"></div>
         </div>
 
-        <!-- Demo -->
         <div class="bg-gray-100 p-4 rounded-md text-center text-sm text-gray-700">
             <p class="font-semibold">Demo Credentials:</p>
             <p>Username: <span class="font-medium">admin</span></p>
@@ -62,8 +49,18 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
-
+    <script>
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            if (username === "admin" && password === "admin123") {
+                localStorage.setItem('loggedIn', 'true');
+                window.location.href = "dashboard.html";
+            } else {
+                alert("Invalid credentials!");
+            }
+        }
+    </script>
 </body>
 
 </html>
