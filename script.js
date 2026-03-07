@@ -1,62 +1,57 @@
+
 const API_BASE = "https://phi-lab-server.vercel.app/api/v1/lab/issues";
 
 let allIssues = [];
 
-// Fetch all issues from API
+// FETCH ALL ISSUES
+
 async function fetchIssues() {
-    document.getElementById("loadingSpinner").classList.remove("hidden");
+    const spinner = document.getElementById("loadingSpinner");
+    spinner.classList.remove("hidden");
+
     try {
         const res = await fetch(API_BASE);
         const data = await res.json();
         allIssues = data.data || data;
-    } catch (error) {
-        console.error("Failed to fetch issues:", error);
+    } catch (err) {
+        console.error("Failed to fetch issues:", err);
+        alert("Failed to load issues from API!");
     } finally {
-        document.getElementById("loadingSpinner").classList.add("hidden");
+        spinner.classList.add("hidden");
     }
     return allIssues;
 }
 
+// GENERATE LABELS
 
+function renderLabels(labels) {
+    if (!labels || labels.length === 0) return "No Labels";
 
-// Render issues into container
-function renderIssues(issues, containerId) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = "";
+    return labels.map(label => {
+        const upperLabel = label.toUpperCase();
+        let colorClass = "bg-gray-200 text-gray-700";
 
-    issues.forEach(issue => {
-        const card = document.createElement("div");
+        if (label.toLowerCase().includes("bug")) colorClass = "bg-red-100 text-red-600";
+        if (label.toLowerCase().includes("help")) colorClass = "bg-orange-100 text-orange-600";
+        if (label.toLowerCase().includes("enhancement")) colorClass = "bg-blue-100 text-blue-600";
+        if (label.toLowerCase().includes("good first issue")) colorClass = "bg-green-100 text-green-700";
 
-        // Top border color based on status
-        const borderColor = issue.status?.toLowerCase() === "open" ? "border-t-4 border-green-500" : "border-t-4 border-purple-500";
+        return `<span class="px-2 py-1 rounded text-sm mr-1 ${colorClass}">${upperLabel}</span>`;
+    }).join("");
+}
 
-        // Priority badge color
-        let priorityBg = "bg-green-200 text-green-700";
-        if (issue.priority?.toLowerCase() === "high") {
-            priorityBg = "bg-pink-200 text-pink-700";
-        } else if (issue.priority?.toLowerCase() === "medium") {
-            priorityBg = "bg-yellow-200 text-yellow-700";
-        }
+// GENERATE ISSUE CARD
 
-        // Labels badges (Dynamic)
-        let labelsHtml = "";
-        const issueLabels = issue.labels || issue.label;
+function getIssueCard(issue) {
+    let priorityBg = "bg-green-200 text-green-700";
+    if (issue.priority?.toLowerCase() === "high") priorityBg = "bg-red-500 text-white";
+    else if (issue.priority?.toLowerCase() === "medium") priorityBg = "bg-yellow-500 text-white";
 
-        if (issueLabels) {
+    const borderColor = issue.status?.toLowerCase() === "open" ? "border-t-4 border-green-500" : "border-t-4 border-purple-500";
 
-            if (Array.isArray(issueLabels)) {
-                labelsHtml = issueLabels.join(", ");
-            } else {
-                labelsHtml = issueLabels;
-            }
-        }
-
-
-        card.className = `bg-white w-[360px] p-6 rounded-xl shadow-md cursor-pointer ${borderColor}`;
-        card.onclick = () => showIssueModal(issue.id);
-
-        card.innerHTML = `
-            <!-- top section -->
+    return `
+        <div class="bg-white w-[360px] p-6 rounded-xl shadow-md cursor-pointer ${borderColor}">
+            <!-- Top -->
             <div class="flex justify-between items-center mb-3">
                 <div class="w-8 h-8 rounded-full bg-green-200 flex items-center justify-center shrink-0">
                     <span class="text-green-700 text-sm">⟳</span>
@@ -66,46 +61,138 @@ function renderIssues(issues, containerId) {
                 </span>
             </div>
 
-            <!-- title -->
-           <h2 class="text-lg font-bold mb-2 text-blue-600" onclick="showIssueModal(${issue.id})">
-    ${issue.title}
-</h2>
+            <!-- Title -->
+            <h2 class="text-lg font-bold mb-2 text-blue-600 cursor-pointer" onclick="showIssueModal(${issue.id})">
+                ${issue.title}
+            </h2>
 
-            <!-- description -->
+            <!-- Description -->
             <p class="text-gray-500 text-sm mb-4 line-clamp-2">
                 ${issue.description ? (issue.description.length > 80 ? issue.description.slice(0, 80) + "..." : issue.description) : ""}
             </p>
 
-            <!-- tags -->
-           <div class="flex flex-wrap gap-2 mb-4">
-        ${renderLabels(issue.labels)}
-    </div>
-            
+            <!-- Labels -->
+            <div class="flex flex-wrap gap-2 mb-4">
+                ${renderLabels(issue.labels)}
+            </div>
 
-            <!-- footer -->
+            <!-- Footer -->
             <div class="text-gray-400 text-xs pt-3 border-t border-slate-100">
                 #${issue.id} by ${issue.author || "Unknown"} <br>
                 ${issue.createdAt ? new Date(issue.createdAt).toLocaleDateString() : ""}
             </div>
-        `;
+        </div>
+    `;
+}
+
+// RENDER ISSUE CARDS INTO CONTAINER
+
+function renderIssues(issues, containerId) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+    issues.forEach(issue => {
+        const card = document.createElement("div");
+        card.innerHTML = getIssueCard(issue);
         container.appendChild(card);
     });
 }
 
-// Update count
-function updateCount(issues) {
-    const el = document.getElementById("issueCount");
-    if (el) el.innerText = `${issues.length} Issues`;
+// GENERATE MODAL CONTENT
+function getIssueModal(issue) {
+
+    let priorityBg = "bg-green-200 text-green-700";
+
+    if (issue.priority?.toLowerCase() === "high") {
+        priorityBg = "bg-red-500 text-white";
+    }
+
+    if (issue.priority?.toLowerCase() === "medium") {
+        priorityBg = "bg-yellow-500 text-white";
+    }
+
+    return `
+
+<h2 class="text-2xl font-bold mb-2">
+${issue.title}
+</h2>
+
+<div class="flex items-center gap-3 text-sm mb-4">
+
+<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full font-medium">
+${issue.status?.toUpperCase()}
+</span>
+
+<span class="text-gray-500">
+Opened by 
+<span class="font-medium text-gray-700">
+${issue.author || "Unknown"}
+</span>
+• ${issue.createdAt ? new Date(issue.createdAt).toLocaleDateString() : ""}
+</span>
+
+</div>
+
+<div class="flex gap-2 mb-4 flex-wrap">
+${renderLabels(issue.labels)}
+</div>
+
+<p class="text-gray-600 mb-6">
+${issue.description || ""}
+</p>
+
+<div class="flex justify-between items-center mb-6">
+
+<div>
+<p class="text-gray-400 text-sm">Assignee:</p>
+<p class="font-semibold text-gray-700">
+${issue.assignee || "Unassigned"}
+</p>
+</div>
+
+<div class="text-right">
+<p class="text-gray-400 text-sm">Priority:</p>
+<span class="px-3 py-1 rounded-full text-sm font-semibold ${priorityBg}">
+${issue.priority?.toUpperCase()}
+</span>
+</div>
+
+</div>
+
+<div class="flex justify-end">
+<button onclick="closeCart()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
+Close
+</button>
+</div>
+
+`;
+}
+// SHOW MODAL
+async function showIssueModal(id) {
+    try {
+        const res = await fetch(`${API_BASE.slice(0, -1)}/${id}`); // /issue/:id
+        const data = await res.json();
+        const issue = data.data;
+
+        document.getElementById("popover-card").innerHTML = getIssueModal(issue);
+        document.getElementById("issueCart").classList.remove("hidden");
+    } catch (err) {
+        console.error(err);
+        alert("Can't Load Issue!");
+    }
 }
 
-// Load issues by status
+// CLOSE MODAL
+function closeCart() {
+    const modal = document.getElementById('issueCart');
+    if (modal) modal.classList.add('hidden');
+}
+
+// LOAD ISSUES BASED ON TAB
 async function loadIssues(status = "all") {
     if (!allIssues.length) await fetchIssues();
 
-    ["allContainer", "openContainer", "closedContainer"].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add("hidden");
-    });
+    const containers = ["allContainer", "openContainer", "closedContainer"];
+    containers.forEach(id => document.getElementById(id)?.classList.add("hidden"));
 
     let filtered = allIssues;
     let containerId = "allContainer";
@@ -120,12 +207,10 @@ async function loadIssues(status = "all") {
 
     renderIssues(filtered, containerId);
     updateCount(filtered);
-
-    const target = document.getElementById(containerId);
-    if (target) target.classList.remove("hidden");
+    document.getElementById(containerId)?.classList.remove("hidden");
 }
 
-// Handle tab button click
+// TAB BUTTON HANDLER
 function loadTab(buttonId) {
     document.querySelectorAll(".allBtn").forEach(btn => {
         btn.classList.remove("bg-[#4A00FF]", "text-white");
@@ -136,94 +221,37 @@ function loadTab(buttonId) {
     if (clicked) {
         clicked.classList.add("bg-[#4A00FF]", "text-white");
         clicked.classList.remove("bg-white", "text-black");
-        const status = clicked.getAttribute("data-tab");
-        loadIssues(status);
-    }
-}
-function renderLabels(labels) {
-    if (!labels || labels.length === 0) return "No Labels";
-
-    return labels.map(label => {
-        const upperLabel = label.toUpperCase();
-        let colorClass = "bg-gray-200 text-gray-700"; // 
-
-        if (label.toLowerCase().includes("bug")) colorClass = "bg-red-100 text-red-600";
-        if (label.toLowerCase().includes("help")) colorClass = "bg-orange-100 text-orange-600";
-        if (label.toLowerCase().includes("enhancement")) colorClass = "bg-blue-100 text-blue-600";
-        if (label.toLowerCase().includes("good first issue")) colorClass = "bg-green-100 text-green-700";
-
-        return `<span class="px-2 py-1 rounded text-sm mr-1 ${colorClass}">${upperLabel}</span>`;
-    }).join("");
-}
-
-
-async function showIssueModal(id) {
-    try {
-        const res = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`);
-        const data = await res.json();
-        const issue = data.data;
-
-        // Fill modal with info
-        document.getElementById('cartTitle').innerText = issue.title;
-        document.getElementById('cartDescription').innerText = issue.description;
-        document.getElementById('cartStatus').innerText = `Status: ${issue.status}`;
-        document.getElementById('cartCategory').innerText = `Category: ${issue.category}`;
-        document.getElementById('cartAuthor').innerText = `Author: ${issue.author}`;
-        document.getElementById('cartPriority').innerText = `Priority: ${issue.priority}`;
-        document.getElementById('cartCreated').innerText = `Created At: ${issue.createdAt}`;
-
-        // ✅ Dynamic labels
-        document.getElementById('cartLabel').innerHTML = renderLabels(issue.labels);
-
-        // Show modal/cart
-        document.getElementById('issueCart').classList.remove('hidden');
-    } catch (err) {
-        console.error(err);
-        alert("Cant Load Data");
+        loadIssues(clicked.getAttribute("data-tab"));
     }
 }
 
-// Close modal/cart
-function closeCart() {
-    document.getElementById('issueCart').classList.add('hidden');
+// UPDATE ISSUE COUNT
+function updateCount(issues) {
+    const el = document.getElementById("issueCount");
+    if (el) el.innerText = `${issues.length} Issues`;
 }
 
-// Close modal
-function closeCart() {
-    const modal = document.getElementById('issueCart');
-    if (modal) modal.classList.add('hidden');
-}
+// SEARCH FUNCTIONALITY
+document.getElementById("searchBtn")?.addEventListener("click", async () => {
+    const input = document.getElementById("searchInput");
+    if (!input) return;
 
-// Search functionality
-const searchBtn = document.getElementById("searchBtn");
-if (searchBtn) {
-    searchBtn.addEventListener("click", async () => {
-        const input = document.getElementById("searchInput");
-        if (!input) return;
+    const query = input.value.trim().toLowerCase();
+    if (!allIssues.length) await fetchIssues();
 
-        const query = input.value.trim().toLowerCase();
-        if (!allIssues.length) await fetchIssues();
+    const filtered = allIssues.filter(issue =>
+        (issue.title && issue.title.toLowerCase().includes(query)) ||
+        (issue.description && issue.description.toLowerCase().includes(query))
+    );
 
-        const filtered = allIssues.filter(issue =>
-            (issue.title && issue.title.toLowerCase().includes(query)) ||
-            (issue.description && issue.description.toLowerCase().includes(query))
-        );
-
-
-        ["openContainer", "closedContainer"].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.classList.add("hidden");
-        });
-
-        renderIssues(filtered, "allContainer");
-        updateCount(filtered);
-        document.getElementById("allContainer")?.classList.remove("hidden");
+    ["allContainer", "openContainer", "closedContainer"].forEach(id => {
+        document.getElementById(id)?.classList.add("hidden");
     });
-}
 
-// On page load
-window.onload = () => {
-    loadTab("allBtn");
-};
+    renderIssues(filtered, "allContainer");
+    updateCount(filtered);
+    document.getElementById("allContainer")?.classList.remove("hidden");
+});
 
-
+// INIT
+window.onload = () => loadTab("allBtn");

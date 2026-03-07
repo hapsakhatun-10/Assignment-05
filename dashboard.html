@@ -20,7 +20,7 @@
         <div class="flex gap-2">
             <input type="text" placeholder="Search..." id="searchInput"
                 class="input input-bordered border border-black">
-            <button class="btn px-4 text-white font-bold bg-[#4a00FF]" id="searchBtn">+New Issue</button>
+            <button class="btn px-4 text-white font-bold bg-[#4a00FF]" id="searchBtn">Search</button>
         </div>
     </nav>
 
@@ -83,20 +83,17 @@
         <!-- Cart -->
         <div id="issueCart" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center">
             <div class="bg-white rounded-lg w-11/12 md:w-96 p-6 relative">
-                <button onclick="closeCart()" class="absolute top-2 right-2 text-xl font-bold">✖</button>
-                <h2 id="cartTitle" class="text-xl font-bold mb-2"></h2>
-                <p id="cartDescription"></p>
-                <p id="cartStatus"></p>
-                <p id="cartCategory"></p>
-                <p id="cartAuthor"></p>
-                <p id="cartPriority"></p>
-                <p id="cartLabel" class="mt-2 text-sm"></p> <!-- Only inside modal -->
-                <p id="cartCreated"></p>
-            </div>
-        </div>
 
-        <!-- Link External JS -->
-        <script src="script.js"></script>
+                <!-- popover-card -->
+                <div id="popover-card">
+
+
+                    <button onclick="closeCart()" class="btn px-4 text-white font-bold bg-red-500 mt-2">Close</button>
+                </div>
+            </div>
+
+            <!-- Link External JS -->
+            <script src="script.js"></script>
 
 </body>
 
