@@ -59,7 +59,7 @@ function getIssueCard(issue) {
     const borderColor = issue.status?.toLowerCase() === "open" ? "border-t-4 border-green-500" : "border-t-4 border-purple-500";
 
     return `
-        <div class="bg-white w-[360px] p-6 rounded-xl shadow-md cursor-pointer ${borderColor}">
+        <div class="bg-white w-full p-6 rounded-xl shadow-md cursor-pointer ${borderColor}">
             <!-- Top -->
             <div class="flex justify-between items-center mb-3">
                 <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0">
