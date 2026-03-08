@@ -31,10 +31,10 @@ function renderLabels(labels) {
         const upperLabel = label.toUpperCase();
         let colorClass = "bg-gray-200 text-gray-700";
 
-        if (label.toLowerCase().includes("bug")) colorClass = "bg-red-100 text-red-600 font-bold";
-        if (label.toLowerCase().includes("help")) colorClass = "bg-orange-100 font-bold text-orange-600";
-        if (label.toLowerCase().includes("enhancement")) colorClass = "bg-blue-100 font-bold text-blue-600";
-        if (label.toLowerCase().includes("good first issue")) colorClass = "font-bold bg-green-100 text-green-700";
+        if (label.toLowerCase().includes("bug")) colorClass = "bg-red-100 text-red-600";
+        if (label.toLowerCase().includes("help")) colorClass = "bg-orange-100 text-orange-600";
+        if (label.toLowerCase().includes("enhancement")) colorClass = "bg-blue-100 text-blue-600";
+        if (label.toLowerCase().includes("good first issue")) colorClass = "bg-green-100 text-green-700";
 
         return `<span class="px-2 py-1 rounded text-sm mr-1 ${colorClass}">${upperLabel}</span>`;
     }).join("");
@@ -62,8 +62,8 @@ function getIssueCard(issue) {
         <div class="bg-white w-full p-6 rounded-xl shadow-md cursor-pointer ${borderColor}">
             <!-- Top -->
             <div class="flex justify-between items-center mb-3">
-                <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0">
-                     <img src="${statusImg}" alt="status">
+                <div class="w-8 h-8 rounded-full bg-green-200 flex items-center justify-center shrink-0">
+              <img src="${statusImg}" alt="status">
                 </div>
                 <span class="text-xs font-semibold px-3 py-1 rounded-full ${priorityBg}">
                     ${issue.priority?.toUpperCase()}
@@ -121,7 +121,7 @@ function getIssueModal(issue) {
 
     return `
 
- <h2 class="text-2xl font-bold mb-2">
+<h2 class="text-2xl font-bold mb-2">
 ${issue.title}
 </h2>
 
@@ -144,7 +144,6 @@ ${issue.author || "Unknown"}
 <div class="flex gap-2 mb-4 flex-wrap">
 ${renderLabels(issue.labels)}
 </div>
-
 
 <p class="text-gray-600 mb-6">
 ${issue.description || ""}
@@ -169,10 +168,11 @@ ${issue.priority?.toUpperCase()}
 </div>
 
 <div class="flex justify-end">
-<button onclick="closeCart()" class="bg-[#4A00FF]  text-white px-5 py-2 hover:bg-blue-400 hover:text-black rounded-lg">
+<button onclick="closeCart()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
 Close
 </button>
 </div>
+
 `;
 }
 // SHOW MODAL
@@ -221,17 +221,19 @@ async function loadIssues(status = "all") {
 
 // TAB BUTTON HANDLER
 function loadTab(buttonId) {
-    document.querySelectorAll(".allBtn").forEach(btn => {
+
+    document.querySelectorAll(".tab-btn").forEach(btn => {
         btn.classList.remove("bg-[#4A00FF]", "text-white");
-        btn.classList.add("bg-white", "text-black",);
+        btn.classList.add("bg-white", "text-black");
     });
 
+
     const clicked = document.getElementById(buttonId);
-    if (clicked) {
-        clicked.classList.add("bg-[#4A00FF]", "text-white");
-        clicked.classList.remove("bg-white", "text-black");
-        loadIssues(clicked.getAttribute("data-tab"));
-    }
+    clicked.classList.add("bg-[#4A00FF]", "text-white");
+    clicked.classList.remove("bg-white", "text-black");
+
+
+    loadIssues(clicked.getAttribute("data-tab"));
 }
 
 // UPDATE ISSUE COUNT
