@@ -9,52 +9,54 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet">
 </head>
 
-<body>
+<body class="bg-gray-50">
 
     <!-- Navbar -->
-    <nav class="flex justify-between items-center p-4 shadow-md">
+    <nav class="flex flex-col sm:flex-row justify-between items-center p-4 shadow-md gap-2 sm:gap-0 bg-white">
         <div class="flex items-center gap-2 font-bold text-xl">
             <img src="assets/github-logo.png" alt="Logo" class="w-10 h-10">
             GitHub Issues Tracker
         </div>
-        <div class="flex gap-2">
+        <div class="flex gap-2 w-full sm:w-auto">
             <input type="text" placeholder="Search..." id="searchInput"
-                class="input input-bordered border border-black">
-            <button class="btn px-4 text-white font-bold bg-[#4a00FF]" id="searchBtn">Search</button>
+                class="input input-bordered border border-black flex-1">
+            <button class="btn px-4 text-white font-bold bg-[#4a00FF] flex-shrink-0" id="searchBtn">Search</button>
         </div>
     </nav>
 
-
     <!-- Tabs -->
-
-    <section
-        class="mx-auto w-11/12 px-4 py-6 md:w-4/5 h-16 flex justify-start items-center border rounded-lg shadow-md gap-2 sm:gap-4 mt-4">
-        <button id="allBtn" data-tab="all" onclick="loadTab('allBtn')"
-            class="btn allBtn px-12 border bg-[#4A00FF] text-white rounded hover:opacity-90 transition">
-            All
-        </button>
-        <button id="openBtn" data-tab="open" onclick="loadTab('openBtn')"
-            class="btn allBtn px-12  bg-white text-black border rounded hover:opacity-90 transition">
-            Open
-        </button>
-        <button id="closeBtn" data-tab="closed" onclick="loadTab('closeBtn')"
-            class="btn allBtn px-12  bg-white text-black border rounded hover:opacity-90 transition">
-            Closed
-        </button>
+    <section class="flex flex-col md:flex-row gap-4 mt-4 mx-4 md:mx-auto md:w-4/5">
+        <!-- Tabs Wrapper -->
+        <div class="flex flex-col md:flex-row gap-2 md:gap-4 w-full md:w-auto">
+            <button id="allBtn" data-tab="all" onclick="loadTab('allBtn')"
+                class="btn bg-[#4A00FF] text-white rounded hover:opacity-90 transition px-4 py-2">
+                All
+            </button>
+            <button id="openBtn" data-tab="open" onclick="loadTab('openBtn')"
+                class="btn bg-white text-black border rounded hover:opacity-90 transition px-4 py-2">
+                Open
+            </button>
+            <button id="closeBtn" data-tab="closed" onclick="loadTab('closeBtn')"
+                class="btn bg-white text-black border rounded hover:opacity-90 transition px-4 py-2">
+                Closed
+            </button>
+        </div>
     </section>
 
     <!-- Issue Tracker -->
-    <section class="mx-auto w-11/12 md:w-4/5 mt-4 p-4 border rounded-lg shadow-md bg-white">
+    <section class="mx-4 md:mx-auto md:w-4/5 mt-4 p-4 border rounded-lg shadow-md bg-white">
 
-        <div class="flex justify-between">
-            <div class="flex gap-3">
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row justify-between gap-4 sm:gap-0">
+            <div class="flex gap-3 items-center">
                 <img src="assets/Aperture.png" class="h-10 rounded-full bg-gray-300" alt="">
                 <div>
                     <h2 id="issueCount" class="text-2xl font-semibold">0 Issues</h2>
-                    <p class="text-gray-500 text-l">Track and manage your project issues</p>
+                    <p class="text-gray-500 text-sm sm:text-l">Track and manage your project issues</p>
                 </div>
             </div>
-            <div class="flex gap-3">
+
+            <div class="flex gap-3 items-center">
                 <div class="flex items-center gap-2">
                     <div class="w-4 h-4 bg-pink-500 rounded-full"></div>
                     <span>Open</span>
@@ -71,28 +73,30 @@
             <span class="loading loading-spinner loading-lg"></span>
         </div>
 
-
-
         <!-- Issue Cards Container -->
-        <div id="allContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4"></div>
-        <div id="openContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4"></div>
-        <div id="closedContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4"></div>
+        <div id="allContainer" class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4"></div>
+        <div id="openContainer" class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 hidden">
+        </div>
+        <div id="closedContainer"
+            class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 hidden"></div>
+
         <!-- Popover -->
         <p id="popoverLabel" class="text-sm mt-2"></p>
 
-        <!-- Cart -->
-        <div id="issueCart" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center">
-            <div class="bg-white rounded-lg w-11/12 md:w-96 p-6 relative">
-
+        <!-- Cart / Modal -->
+        <div id="issueCart" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center p-4">
+            <div class="bg-white rounded-lg w-full max-w-md p-6 relative">
                 <!-- popover-card -->
                 <div id="popover-card">
-                    <button onclick="closeCart()" class="btn px-4 text-white font-bold bg-red-500 mt-2">Close</button>
+                    <button onclick="closeCart()"
+                        class="btn px-4 py-2 text-white font-bold bg-red-500 w-full mt-2 rounded">Close</button>
                 </div>
             </div>
-
-            <!-- Link External JS -->
-            <script src="script.js"></script>
         </div>
+
+        <!-- External JS -->
+        <script src="script.js"></script>
+
     </section>
 </body>
 
