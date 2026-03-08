@@ -31,10 +31,10 @@ function renderLabels(labels) {
         const upperLabel = label.toUpperCase();
         let colorClass = "bg-gray-200 text-gray-700";
 
-        if (label.toLowerCase().includes("bug")) colorClass = "bg-red-100 text-red-600";
-        if (label.toLowerCase().includes("help")) colorClass = "bg-orange-100 text-orange-600";
-        if (label.toLowerCase().includes("enhancement")) colorClass = "bg-blue-100 text-blue-600";
-        if (label.toLowerCase().includes("good first issue")) colorClass = "bg-green-100 text-green-700";
+        if (label.toLowerCase().includes("bug")) colorClass = "bg-red-100 text-red-600 font-bold";
+        if (label.toLowerCase().includes("help")) colorClass = "bg-orange-100 font-bold text-orange-600";
+        if (label.toLowerCase().includes("enhancement")) colorClass = "bg-blue-100 font-bold text-blue-600";
+        if (label.toLowerCase().includes("good first issue")) colorClass = "font-bold bg-green-100 text-green-700";
 
         return `<span class="px-2 py-1 rounded text-sm mr-1 ${colorClass}">${upperLabel}</span>`;
     }).join("");
