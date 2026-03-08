@@ -47,14 +47,23 @@ function getIssueCard(issue) {
     if (issue.priority?.toLowerCase() === "high") priorityBg = "bg-red-500 text-white";
     else if (issue.priority?.toLowerCase() === "medium") priorityBg = "bg-yellow-500 text-white";
 
+    let statusImg = "";
+
+    if (issue.status.toLowerCase() === "open") {
+        statusImg = "assets/Open-Status.png";
+    } else {
+        statusImg = "assets/Closed-Status.png";
+    }
+
+
     const borderColor = issue.status?.toLowerCase() === "open" ? "border-t-4 border-green-500" : "border-t-4 border-purple-500";
 
     return `
         <div class="bg-white w-[360px] p-6 rounded-xl shadow-md cursor-pointer ${borderColor}">
             <!-- Top -->
             <div class="flex justify-between items-center mb-3">
-                <div class="w-8 h-8 rounded-full bg-green-200 flex items-center justify-center shrink-0">
-                    <span class="text-green-700 text-sm">⟳</span>
+                <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0">
+                     <img src="${statusImg}" alt="status">
                 </div>
                 <span class="text-xs font-semibold px-3 py-1 rounded-full ${priorityBg}">
                     ${issue.priority?.toUpperCase()}
@@ -112,7 +121,7 @@ function getIssueModal(issue) {
 
     return `
 
-<h2 class="text-2xl font-bold mb-2">
+ <h2 class="text-2xl font-bold mb-2">
 ${issue.title}
 </h2>
 
@@ -135,6 +144,7 @@ ${issue.author || "Unknown"}
 <div class="flex gap-2 mb-4 flex-wrap">
 ${renderLabels(issue.labels)}
 </div>
+
 
 <p class="text-gray-600 mb-6">
 ${issue.description || ""}
@@ -159,11 +169,10 @@ ${issue.priority?.toUpperCase()}
 </div>
 
 <div class="flex justify-end">
-<button onclick="closeCart()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
+<button onclick="closeCart()" class="bg-[#4A00FF]  text-white px-5 py-2 hover:bg-blue-400 hover:text-black rounded-lg">
 Close
 </button>
 </div>
-
 `;
 }
 // SHOW MODAL
@@ -214,7 +223,7 @@ async function loadIssues(status = "all") {
 function loadTab(buttonId) {
     document.querySelectorAll(".allBtn").forEach(btn => {
         btn.classList.remove("bg-[#4A00FF]", "text-white");
-        btn.classList.add("bg-white", "text-black");
+        btn.classList.add("bg-white", "text-black",);
     });
 
     const clicked = document.getElementById(buttonId);

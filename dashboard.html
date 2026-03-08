@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet">
 </head>
 
-<body class="">
+<body>
 
     <!-- Navbar -->
     <nav class="flex justify-between items-center p-4 shadow-md">
@@ -28,9 +28,9 @@
     <!-- Tabs -->
 
     <section
-        class=" mx-auto w-11/12 px-4 py-6 md:w-4/5 h-16 flex justify-start items-center border rounded-lg shadow-md mx-auto gap-2 sm:gap-4 mt-4">
+        class="mx-auto w-11/12 px-4 py-6 md:w-4/5 h-16 flex justify-start items-center border rounded-lg shadow-md mx-auto gap-2 sm:gap-4 mt-4">
         <button id="allBtn" data-tab="all" onclick="loadTab('allBtn')"
-            class="btn allBtn px-12 bg-[#4A00FF] text-white rounded hover:opacity-90 transition">
+            class="btn allBtn px-12 border bg-[#4A00FF] text-white rounded hover:opacity-90 transition">
             All
         </button>
         <button id="openBtn" data-tab="open" onclick="loadTab('openBtn')"
@@ -86,15 +86,14 @@
 
                 <!-- popover-card -->
                 <div id="popover-card">
-
-
                     <button onclick="closeCart()" class="btn px-4 text-white font-bold bg-red-500 mt-2">Close</button>
                 </div>
             </div>
 
             <!-- Link External JS -->
             <script src="script.js"></script>
-
+        </div>
+    </section>
 </body>
 
 </html>
